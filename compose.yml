@@ -24,12 +24,9 @@ services:
 
   grafana:
     image: grafana/grafana-oss:9.4.1
-    # command: /bin/sh -c "sed -i 's/^http_port = 3000/http_port = 3001/' /etc/grafana/grafana.ini && /run.sh"
-    # user: "472"
     ports:
-      - "3001:3001"
+      - "3000:3000"
     volumes:
       - ./docker/grafana/data:/var/lib/grafana
-      - ./docker/grafana/data/grafana.ini:/etc/grafana/grafana.ini
     depends_on:
       - influxdb
