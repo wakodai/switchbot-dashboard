@@ -7,7 +7,7 @@ import schedule
 from dotenv import load_dotenv
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
-from switchbot import Switchbot
+from Switchbot import Switchbot
 
 # Logging
 formatter = "[%(levelname)-8s] %(asctime)s %(funcName)s %(message)s"
@@ -33,9 +33,9 @@ def save_device_status(status: dict):
 
     device_type = status.get("deviceType")
 
-    if device_type == "MeterPlus":
+    if device_type == "Meter":
         p = (
-            Point("MeterPlus")
+            Point("Meter")
             .tag("device_id", status["deviceId"])
             .field("humidity", float(status["humidity"]))
             .field("temperature", float(status["temperature"]))
@@ -51,10 +51,11 @@ def task():
 
     with open("device_list.json", "r") as f:
         device_list = json.load(f)
+        logging.info(f"Device list: {device_list}")
 
     for d in device_list:
         device_type = d.get("deviceType")
-        if device_type == "MeterPlus":
+        if device_type == "Meter":
             try:
                 status = bot.get_device_status(d.get("deviceId"))
             except Exception as e:
@@ -68,7 +69,7 @@ def task():
 
 
 if __name__ == "__main__":
-    schedule.every(5).minutes.do(task)
+    schedule.every(1).minutes.do(task)
 
     while True:
         schedule.run_pending()
