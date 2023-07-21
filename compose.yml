@@ -7,6 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     tty: true
+    restart: always
 
   influxdb:
     image: influxdb:2.6.1
@@ -21,6 +22,7 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=password
       - DOCKER_INFLUXDB_INIT_ORG=org
       - DOCKER_INFLUXDB_INIT_BUCKET=switchbot
+    restart: always
 
   grafana:
     image: grafana/grafana-oss:9.4.1
@@ -30,3 +32,5 @@ services:
       - ./docker/grafana/data:/var/lib/grafana
     depends_on:
       - influxdb
+    restart: always
+
